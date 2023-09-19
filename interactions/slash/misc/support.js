@@ -1,19 +1,22 @@
-const { EmbedBuilder, SlashCommandBuilder, SlashCommandMentionableOption, Role, GuildMemberFlags, GuildMemberFlagsBitField, GatewayIntentBits, GuildMemberManager } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder, Role, GuildMemberFlags, GuildMemberFlagsBitField, GatewayIntentBits, GuildMemberManager } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("support")
-        .setDescription(
-            "Triggers a support request interaction! Woohoo!"
-        )
-        .addRoleOption((option) =>
-            option
-                .setName("helper")
-                .setDescription("Choose a helper to ping for asistance.")
+        .setDescription("Triggers a support interaction! Woohoo!")
+        .addStringOption(option =>
+            option.setName("category")
+                .setDescription("What kind of support are you looking for?")
                 .setRequired(true)
-        ),
+                .addChoices(
+                    { name: 'sample1', value: 'E'},
+                    { name: 'sample2', value: 'A'},
+                )
 
-    async execute(interaction) {
+
+            ),
+
+    execute(interaction) {
         const helperRoleId = "1153047914596290751";
 
         const guild = interaction.client.guilds.fetch(1152995657704017930);
