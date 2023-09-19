@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder, RoleFlags, RoleManager, PermissionsBitField, RoleFlagsBitField, SlashCommandMentionableOption, Role, GuildMemberFlags, GuildMemberFlagsBitField, GatewayIntentBits } = require("discord.js");
+const { EmbedBuilder, SlashCommandBuilder, SlashCommandMentionableOption, Role, GuildMemberFlags, GuildMemberFlagsBitField, GatewayIntentBits, GuildMemberManager } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -6,7 +6,7 @@ module.exports = {
         .setDescription(
             "Triggers a support request interaction! Woohoo!"
         )
-        .addUserOption((option) =>
+        .addRoleOption((option) =>
             option
                 .setName("helper")
                 .setDescription("Choose a helper to ping for asistance.")
@@ -22,13 +22,14 @@ module.exports = {
         let helperRoleApiCallResponse = interaction.guild.roles.cache.get(helperRoleId);
 
         const membersWithHelperRole = helperRoleApiCallResponse.members;
-            const list = await guild.members.fetch({ withPresences: true }).then(fetchedMembers => {
-            const totalOnline = fetchedMembers.filter(member => member.presence?.status === 'online');
-            });
-        membersWithHelperRole.forEach(member => {
-            console.log(member.user.id);
-            
-        });
         
-    },
+        interaction.guild.members.fetch({ withPresences: true }).then(fetchedMembers => {
+            const totalOnline = fetchedMembers.filter(member => member.presence?.status === 'online');
+            // Now you have a collection with all online member objects in the totalOnline variable
+            console.log(`There are currently ${totalOnline.size} members online in this guild!`);
+        });
+
+        
+        //console.log([...membersWithHelperRole.entries()][1][1].presence)
+        },
 };
